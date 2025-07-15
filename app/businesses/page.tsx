@@ -21,7 +21,7 @@ const businesses = [
     location: "Chicago, IL",
     founded: "1998",
     employees: "250-500",
-    category: "Manufacturing",
+    industry: "Manufacturing",
     specialties: ["Steel Manufacturing", "Industrial Pipes", "Custom Fabrication"],
     certifications: ["ISO 9001", "ISO 14001", "OSHA Certified"],
     productsCount: 45,
@@ -40,7 +40,7 @@ const businesses = [
     location: "Austin, TX",
     founded: "2010",
     employees: "50-100",
-    category: "Electronics",
+    industry: "Electronics",
     specialties: ["LED Lighting", "Smart Controls", "Energy Solutions"],
     certifications: ["Energy Star", "UL Listed", "FCC Certified"],
     productsCount: 28,
@@ -59,7 +59,7 @@ const businesses = [
     location: "New York, NY",
     founded: "2005",
     employees: "100-250",
-    category: "Furniture",
+    industry: "Furniture",
     specialties: ["Office Furniture", "Ergonomic Design", "Space Planning"],
     certifications: ["GREENGUARD", "SCS Certified", "BIFMA"],
     productsCount: 67,
@@ -78,7 +78,7 @@ const businesses = [
     location: "Denver, CO",
     founded: "2001",
     employees: "25-50",
-    category: "Safety",
+    industry: "Safety",
     specialties: ["Safety Equipment", "Training Programs", "Compliance Solutions"],
     certifications: ["ANSI Certified", "OSHA Approved", "CE Marked"],
     productsCount: 89,
@@ -97,7 +97,7 @@ const businesses = [
     location: "Seattle, WA",
     founded: "2015",
     employees: "10-25",
-    category: "Technology",
+    industry: "Technology",
     specialties: ["Automation", "Control Systems", "IoT Solutions"],
     certifications: ["ISO 27001", "IEC 61508", "UL Listed"],
     productsCount: 23,
@@ -116,7 +116,7 @@ const businesses = [
     location: "Portland, OR",
     founded: "2012",
     employees: "50-100",
-    category: "Construction",
+    industry: "Construction",
     specialties: ["Sustainable Materials", "Green Building", "LEED Solutions"],
     certifications: ["LEED Certified", "FSC Certified", "Cradle to Cradle"],
     productsCount: 56,
@@ -126,8 +126,8 @@ const businesses = [
   },
 ]
 
-const categories = [
-  "All Categories",
+const industries = [
+  "All Industries",
   "Manufacturing",
   "Electronics",
   "Furniture",
@@ -197,12 +197,12 @@ export default function BusinessesPage() {
               </div>
               <Select>
                 <SelectTrigger className="w-full md:w-48 h-12 border-0">
-                  <SelectValue placeholder="Category" />
+                  <SelectValue placeholder="Industry" />
                 </SelectTrigger>
                 <SelectContent>
-                  {categories.map((category) => (
-                    <SelectItem key={category} value={category.toLowerCase()}>
-                      {category}
+                  {industries.map((industry) => (
+                    <SelectItem key={industry} value={industry.toLowerCase()}>
+                      {industry}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -282,12 +282,12 @@ export default function BusinessesPage() {
               </div>
               <Select>
                 <SelectTrigger className="w-full md:w-48">
-                  <SelectValue placeholder="Category" />
+                  <SelectValue placeholder="Industry" />
                 </SelectTrigger>
                 <SelectContent>
-                  {categories.map((category) => (
-                    <SelectItem key={category} value={category.toLowerCase()}>
-                      {category}
+                  {industries.map((industry) => (
+                    <SelectItem key={industry} value={industry.toLowerCase()}>
+                      {industry}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -357,7 +357,7 @@ export default function BusinessesPage() {
                       </h3>
                     </Link>
                     <Badge variant="secondary" className="mb-2 bg-primary-100 text-primary-800">
-                      {business.category}
+                      {business.industry}
                     </Badge>
                   </div>
                 </div>
