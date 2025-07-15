@@ -1,4 +1,7 @@
-import { Star, MapPin, Truck, Shield, ArrowLeft, Heart, Share2 } from "lucide-react"
+"use client"
+
+import { useState } from "react"
+import { Star, MapPin, Truck, Shield, ArrowLeft, Heart, Share2, Calculator, FileText, Send } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 
@@ -7,6 +10,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Separator } from "@/components/ui/separator"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Textarea } from "@/components/ui/textarea"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 
 // Mock product data
 const productData = {
@@ -44,14 +51,40 @@ const productData = {
       time: "5-7 business days",
       cost: "Calculated at checkout",
     },
+    basePrice: 45.99,
+    bulkDiscounts: [
+      { min: 100, discount: 0.05 },
+      { min: 500, discount: 0.1 },
+      { min: 1000, discount: 0.15 },
+    ],
   },
 }
 
 export default function ProductPage({ params }: { params: { id: string } }) {
   const product = productData[Number.parseInt(params.id) as keyof typeof productData]
+  const [quantity, setQuantity] = useState(1)
+  const [diameter, setDiameter] = useState("")
+  const [length, setLength] = useState("")
 
   if (!product) {
     return <div>Product not found</div>
+  }
+
+  const calculatePrice = () => {
+    let unitPrice = product.basePrice
+    const bulkDiscount = product.bulkDiscounts.find((discount) => quantity >= discount.min)
+    if (bulkDiscount) {
+      unitPrice = unitPrice * (1 - bulkDiscount.discount)
+    }
+    return unitPrice * quantity
+  }
+
+  const getBulkDiscountText = () => {
+    const bulkDiscount = product.bulkDiscounts.find((discount) => quantity >= discount.min)
+    if (bulkDiscount) {
+      return `${bulkDiscount.discount * 100}% bulk discount applied`
+    }
+    return ""
   }
 
   return (
@@ -211,11 +244,13 @@ export default function ProductPage({ params }: { params: { id: string } }) {
 
         {/* Product Details Tabs */}
         <Tabs defaultValue="specifications" className="w-full">
-          <TabsList className="grid w-full grid-cols-4">
+          <TabsList className="grid w-full grid-cols-6">
             <TabsTrigger value="specifications">Specifications</TabsTrigger>
             <TabsTrigger value="features">Features</TabsTrigger>
             <TabsTrigger value="shipping">Shipping</TabsTrigger>
             <TabsTrigger value="reviews">Reviews</TabsTrigger>
+            <TabsTrigger value="quote">Quote Request</TabsTrigger>
+            <TabsTrigger value="calculator">Calculator</TabsTrigger>
           </TabsList>
 
           <TabsContent value="specifications" className="mt-6">
@@ -304,6 +339,211 @@ export default function ProductPage({ params }: { params: { id: string } }) {
                       </p>
                     </div>
                   ))}
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="quote" className="mt-6">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center">
+                  <FileText className="h-5 w-5 mr-2" />
+                  Request Custom Quote
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <form className="space-y-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <Label htmlFor="quoteFirstName">First Name *</Label>
+                      <Input id="quoteFirstName" placeholder="John" className="mt-1" />
+                    </div>
+                    <div>
+                      <Label htmlFor="quoteLastName">Last Name *</Label>
+                      <Input id="quoteLastName" placeholder="Smith" className="mt-1" />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <Label htmlFor="quoteEmail">Email Address *</Label>
+                      <Input id="quoteEmail" type="email" placeholder="john@company.com" className="mt-1" />
+                    </div>
+                    <div>
+                      <Label htmlFor="quotePhone">Phone Number</Label>
+                      <Input id="quotePhone" placeholder="+1 (555) 123-4567" className="mt-1" />
+                    </div>
+                  </div>
+
+                  <div>
+                    <Label htmlFor="quoteCompany">Company Name *</Label>
+                    <Input id="quoteCompany" placeholder="Your Company Inc." className="mt-1" />
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div>
+                      <Label htmlFor="quoteQuantity">Quantity Needed *</Label>
+                      <Input id="quoteQuantity" type="number" placeholder="100" className="mt-1" />
+                    </div>
+                    <div>
+                      <Label htmlFor="quoteDiameter">Diameter</Label>
+                      <Select>
+                        <SelectTrigger className="mt-1">
+                          <SelectValue placeholder="Select diameter" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="1">1 inch</SelectItem>
+                          <SelectItem value="2">2 inches</SelectItem>
+                          <SelectItem value="4">4 inches</SelectItem>
+                          <SelectItem value="6">6 inches</SelectItem>
+                          <SelectItem value="8">8 inches</SelectItem>
+                          <SelectItem value="12">12 inches</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div>
+                      <Label htmlFor="quoteLength">Length (feet)</Label>
+                      <Input id="quoteLength" type="number" placeholder="20" className="mt-1" />
+                    </div>
+                  </div>
+
+                  <div>
+                    <Label htmlFor="quoteDeliveryDate">Required Delivery Date</Label>
+                    <Input id="quoteDeliveryDate" type="date" className="mt-1" />
+                  </div>
+
+                  <div>
+                    <Label htmlFor="quoteLocation">Delivery Location *</Label>
+                    <Input id="quoteLocation" placeholder="City, State, ZIP" className="mt-1" />
+                  </div>
+
+                  <div>
+                    <Label htmlFor="quoteRequirements">Special Requirements</Label>
+                    <Textarea
+                      id="quoteRequirements"
+                      placeholder="Please describe any special requirements, certifications needed, or project details..."
+                      rows={4}
+                      className="mt-1"
+                    />
+                  </div>
+
+                  <div>
+                    <Label htmlFor="quoteUsage">Intended Usage</Label>
+                    <Select>
+                      <SelectTrigger className="mt-1">
+                        <SelectValue placeholder="Select usage type" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="construction">Construction</SelectItem>
+                        <SelectItem value="plumbing">Plumbing</SelectItem>
+                        <SelectItem value="industrial">Industrial Process</SelectItem>
+                        <SelectItem value="infrastructure">Infrastructure</SelectItem>
+                        <SelectItem value="other">Other</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <Button type="submit" className="w-full bg-primary-700 hover:bg-primary-800 text-white">
+                    <Send className="h-4 w-4 mr-2" />
+                    Request Quote
+                  </Button>
+                </form>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="calculator" className="mt-6">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center">
+                  <Calculator className="h-5 w-5 mr-2" />
+                  Price Calculator
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-6">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div>
+                      <Label htmlFor="calcQuantity">Quantity *</Label>
+                      <Input
+                        id="calcQuantity"
+                        type="number"
+                        value={quantity}
+                        onChange={(e) => setQuantity(Number(e.target.value) || 1)}
+                        min="1"
+                        className="mt-1"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="calcDiameter">Diameter</Label>
+                      <Select value={diameter} onValueChange={setDiameter}>
+                        <SelectTrigger className="mt-1">
+                          <SelectValue placeholder="Select diameter" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="1">1 inch</SelectItem>
+                          <SelectItem value="2">2 inches</SelectItem>
+                          <SelectItem value="4">4 inches</SelectItem>
+                          <SelectItem value="6">6 inches</SelectItem>
+                          <SelectItem value="8">8 inches</SelectItem>
+                          <SelectItem value="12">12 inches</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div>
+                      <Label htmlFor="calcLength">Length (feet)</Label>
+                      <Input
+                        id="calcLength"
+                        type="number"
+                        value={length}
+                        onChange={(e) => setLength(e.target.value)}
+                        placeholder="20"
+                        className="mt-1"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="bg-gray-50 p-4 rounded-lg">
+                    <h4 className="font-semibold mb-3">Price Breakdown</h4>
+                    <div className="space-y-2">
+                      <div className="flex justify-between">
+                        <span>Unit Price:</span>
+                        <span>${product.basePrice.toFixed(2)}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>Quantity:</span>
+                        <span>{quantity} units</span>
+                      </div>
+                      {getBulkDiscountText() && (
+                        <div className="flex justify-between text-green-600">
+                          <span>Bulk Discount:</span>
+                          <span>{getBulkDiscountText()}</span>
+                        </div>
+                      )}
+                      <Separator />
+                      <div className="flex justify-between text-lg font-bold">
+                        <span>Total Price:</span>
+                        <span>${calculatePrice().toFixed(2)}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="bg-blue-50 p-4 rounded-lg">
+                    <h4 className="font-semibold mb-2">Bulk Pricing Tiers</h4>
+                    <div className="space-y-1 text-sm">
+                      <div>100+ units: 5% discount</div>
+                      <div>500+ units: 10% discount</div>
+                      <div>1000+ units: 15% discount</div>
+                    </div>
+                  </div>
+
+                  <div className="flex space-x-3">
+                    <Button className="flex-1 bg-primary-700 hover:bg-primary-800 text-white">Add to Cart</Button>
+                    <Button variant="outline" className="flex-1 bg-transparent">
+                      Request Quote for This Configuration
+                    </Button>
+                  </div>
                 </div>
               </CardContent>
             </Card>

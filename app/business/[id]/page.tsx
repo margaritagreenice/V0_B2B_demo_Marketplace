@@ -1,4 +1,4 @@
-import { Star, MapPin, Phone, Mail, Globe, Users, Calendar, Award } from "lucide-react"
+import { Star, MapPin, Phone, Mail, Globe, Users, Calendar, Award, Send } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 
@@ -6,6 +6,10 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Textarea } from "@/components/ui/textarea"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 
 // Mock business data
 const businessData = {
@@ -149,10 +153,11 @@ export default function BusinessProfilePage({ params }: { params: { id: string }
           {/* Main Content */}
           <div className="lg:col-span-2">
             <Tabs defaultValue="products" className="w-full">
-              <TabsList className="grid w-full grid-cols-3">
+              <TabsList className="grid w-full grid-cols-4">
                 <TabsTrigger value="products">Products</TabsTrigger>
                 <TabsTrigger value="about">About</TabsTrigger>
                 <TabsTrigger value="reviews">Reviews</TabsTrigger>
+                <TabsTrigger value="contact">Contact</TabsTrigger>
               </TabsList>
 
               <TabsContent value="products" className="space-y-6">
@@ -247,6 +252,85 @@ export default function BusinessProfilePage({ params }: { params: { id: string }
                         </div>
                       ))}
                     </div>
+                  </CardContent>
+                </Card>
+              </TabsContent>
+
+              <TabsContent value="contact" className="space-y-6">
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center">
+                      <Send className="h-5 w-5 mr-2" />
+                      Contact {business.name}
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <form className="space-y-4">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                          <Label htmlFor="firstName">First Name *</Label>
+                          <Input id="firstName" placeholder="John" className="mt-1" />
+                        </div>
+                        <div>
+                          <Label htmlFor="lastName">Last Name *</Label>
+                          <Input id="lastName" placeholder="Smith" className="mt-1" />
+                        </div>
+                      </div>
+
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                          <Label htmlFor="email">Email Address *</Label>
+                          <Input id="email" type="email" placeholder="john@company.com" className="mt-1" />
+                        </div>
+                        <div>
+                          <Label htmlFor="phone">Phone Number</Label>
+                          <Input id="phone" placeholder="+1 (555) 123-4567" className="mt-1" />
+                        </div>
+                      </div>
+
+                      <div>
+                        <Label htmlFor="company">Company Name</Label>
+                        <Input id="company" placeholder="Your Company Inc." className="mt-1" />
+                      </div>
+
+                      <div>
+                        <Label htmlFor="subject">Subject *</Label>
+                        <Select>
+                          <SelectTrigger className="mt-1">
+                            <SelectValue placeholder="Select inquiry type" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="general">General Inquiry</SelectItem>
+                            <SelectItem value="quote">Request Quote</SelectItem>
+                            <SelectItem value="partnership">Partnership</SelectItem>
+                            <SelectItem value="support">Technical Support</SelectItem>
+                            <SelectItem value="other">Other</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+
+                      <div>
+                        <Label htmlFor="message">Message *</Label>
+                        <Textarea
+                          id="message"
+                          placeholder="Please describe your inquiry in detail..."
+                          rows={5}
+                          className="mt-1"
+                        />
+                      </div>
+
+                      <div className="flex items-center space-x-2">
+                        <input type="checkbox" id="newsletter" className="rounded" />
+                        <Label htmlFor="newsletter" className="text-sm">
+                          I would like to receive updates about new products and services
+                        </Label>
+                      </div>
+
+                      <Button type="submit" className="w-full bg-primary-700 hover:bg-primary-800 text-white">
+                        <Send className="h-4 w-4 mr-2" />
+                        Send Message
+                      </Button>
+                    </form>
                   </CardContent>
                 </Card>
               </TabsContent>
