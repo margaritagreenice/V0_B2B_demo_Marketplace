@@ -1,4 +1,4 @@
-import { Search, Filter, Grid, List, Star, MapPin, Package, ShoppingCart } from "lucide-react"
+import { Search, Filter, Grid, List, Star, MapPin, Package, ShoppingCart, Heart } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 
@@ -229,6 +229,13 @@ export default function HomePage() {
                     <span className="text-xl font-bold text-gray-900">{product.price}</span>
                     <Button size="sm" className="bg-primary-700 hover:bg-primary-800 text-white">
                       Contact
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="border-primary-600 text-primary-700 hover:bg-primary-50 bg-transparent"
+                    >
+                      <Heart className="h-4 w-4" />
                     </Button>
                   </div>
                 </CardContent>

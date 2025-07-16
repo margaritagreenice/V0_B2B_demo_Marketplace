@@ -41,7 +41,7 @@ const savedProducts = [
     name: "Industrial Steel Pipes",
     business: "MetalWorks Inc",
     price: "$45.99/unit",
-    image: "/placeholder.svg?height=100&width=100",
+    image: "/images/steel-pipes.jpg",
     inStock: true,
   },
   {
@@ -49,7 +49,7 @@ const savedProducts = [
     name: "Safety Equipment Kit",
     business: "SafeGuard Industries",
     price: "$89.99/kit",
-    image: "/placeholder.svg?height=100&width=100",
+    image: "/images/safety-equipment.jpg",
     inStock: false,
   },
 ]
@@ -114,12 +114,12 @@ export default function BuyerDashboardPage() {
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Saved Products</CardTitle>
+              <CardTitle className="text-sm font-medium">My Favorites</CardTitle>
               <Heart className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">18</div>
-              <p className="text-xs text-muted-foreground">2 back in stock</p>
+              <p className="text-xs text-muted-foreground">Manage your saved products</p>
             </CardContent>
           </Card>
 
@@ -260,7 +260,7 @@ export default function BuyerDashboardPage() {
             <Card className="mt-6">
               <CardHeader className="flex flex-row items-center justify-between">
                 <CardTitle>Recently Saved</CardTitle>
-                <Link href="/buyer/wishlist">
+                <Link href="/buyer/favorites">
                   <Button variant="outline" size="sm" className="bg-transparent">
                     View All
                   </Button>

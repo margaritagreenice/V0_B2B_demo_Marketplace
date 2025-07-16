@@ -105,8 +105,12 @@ export default function ProductPage({ params }: { params: { id: string } }) {
               </Link>
             </nav>
             <div className="flex items-center space-x-2">
-              <Button variant="outline" size="icon">
-                <Heart className="h-4 w-4" />
+              <Button
+                variant="outline"
+                className="border-primary-600 text-primary-700 hover:bg-primary-50 bg-transparent"
+              >
+                <Heart className="h-4 w-4 mr-2" />
+                Add to Favorites
               </Button>
               <Button variant="outline" size="icon">
                 <Share2 className="h-4 w-4" />
